@@ -22,6 +22,7 @@ const int releA = 27;
 const int releB = 14;
 const int buttonPin = 26;
 const int pirPin = 13;  // Pin al que está conectado el sensor PIR
+const int beeper = 33;
 bool pirStateActive = false; // Indica si el PIR está activo
 unsigned long pirTimerStart = 0; // Guarda el tiempo de activación del PIR
 const unsigned long pirActiveDuration = 10000; // Duración de 10 segundos (en milisegundos) para mantener el PIR activo
@@ -46,6 +47,7 @@ void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(releA, OUTPUT);
   pinMode(releB, OUTPUT);
+  pinMode(beeper, OUTPUT);
   Serial.println("Monitoring PIR Sensor in real-time...");
   attachInterrupt(digitalPinToInterrupt(buttonPin), handleButton, FALLING); // Interrupción para el botón (detecta cuando se presiona)
 
@@ -108,6 +110,17 @@ void loop() {
    if(Firebase.RTDB.getInt(&fbdo, "/rele2", &releStateB)){
     digitalWrite(releB, !releStateB);
    }
+
+     int beep;
+ if(Firebase.RTDB.getInt(&fbdo, "/beeper", &beep)){
+  if(beep == true) {
+    tone(beeper, 1000); // Activar buzzer a 1000 Hz
+    Serial.printf("beep");
+  } else {
+    noTone(beeper);     // Apagar buzzer
+     Serial.printf("no beep");
+  }
+}
    
   }
 
