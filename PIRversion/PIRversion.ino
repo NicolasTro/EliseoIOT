@@ -101,18 +101,18 @@ void loop() {
     sendDataPrevMillis = millis();
 
    int releState;
-   if(Firebase.RTDB.getInt(&fbdo, "/rele1", &releState)){
+   if(Firebase.RTDB.getInt(&fbdo, "/house/rele1", &releState)){
     digitalWrite(releA, !releState);
    }
    
   
    int releStateB;
-   if(Firebase.RTDB.getInt(&fbdo, "/rele2", &releStateB)){
+   if(Firebase.RTDB.getInt(&fbdo, "/house/rele2", &releStateB)){
     digitalWrite(releB, !releStateB);
    }
 
      int beep;
- if(Firebase.RTDB.getInt(&fbdo, "/beeper", &beep)){
+ if(Firebase.RTDB.getInt(&fbdo, "/house/beeper", &beep)){
   if(beep == true) {
     tone(beeper, 1000); // Activar buzzer a 1000 Hz
     Serial.printf("beep");
