@@ -83,7 +83,7 @@ void loop() {
   // Verificar si el PIR detectó movimiento y si no está en estado activo por el temporizador
   if (pirState == HIGH && !pirStateActive) {
     Serial.println("PIR Pin: HIGH (Motion detected)");
-    Firebase.RTDB.setBool(&fbdo, F("/house/pir-state"), true);
+    Firebase.RTDB.setBool(&fbdo, F("/catalinatempraotero@gmailcom/pir-state"), true);
     pirStateActive = true; // Marcar el PIR como activo
     pirTimerStart = millis(); // Iniciar el temporizador de 10 segundos
   }
@@ -91,28 +91,28 @@ void loop() {
   // Si el PIR está activo, comprobar si han pasado los 10 segundos
   if (pirStateActive && (millis() - pirTimerStart >= pirActiveDuration)) {
     Serial.println("PIR Pin: LOW (No motion - 10s passed)");
-    Firebase.RTDB.setBool(&fbdo, F("/house/pir-state"), false);
+    Firebase.RTDB.setBool(&fbdo, F("/catalinatempraotero@gmailcom/pir-state"), false);
     pirStateActive = false; // Reiniciar el estado del PIR
   }
-  Serial.printf("Button state: %s\n", Firebase.RTDB.setBool(&fbdo, F("/house/button-state"), buttonState) ? "ok" : "no ok");
+  Serial.printf("Button state: %s\n", Firebase.RTDB.setBool(&fbdo, F("/catalinatempraotero@gmailcom/button-state"), buttonState) ? "ok" : "no ok");
 
  if (Firebase.ready() && (millis() - sendDataPrevMillis > 1000 || sendDataPrevMillis == 0))
   {
     sendDataPrevMillis = millis();
 
    int releState;
-   if(Firebase.RTDB.getInt(&fbdo, "/house/rele1", &releState)){
+   if(Firebase.RTDB.getInt(&fbdo, "/catalinatempraotero@gmailcom/rele1", &releState)){
     digitalWrite(releA, !releState);
    }
    
   
    int releStateB;
-   if(Firebase.RTDB.getInt(&fbdo, "/house/rele2", &releStateB)){
+   if(Firebase.RTDB.getInt(&fbdo, "/catalinatempraotero@gmailcom/rele2", &releStateB)){
     digitalWrite(releB, !releStateB);
    }
 
      int beep;
- if(Firebase.RTDB.getInt(&fbdo, "/house/beeper", &beep)){
+ if(Firebase.RTDB.getInt(&fbdo, "/catalinatempraotero@gmailcom/beeper", &beep)){
   if(beep == true) {
     tone(beeper, 1000); // Activar buzzer a 1000 Hz
     Serial.printf("beep");
